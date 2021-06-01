@@ -45,7 +45,7 @@ RUN apt-get update \
   && update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 COPY --from=terraform /terraform /usr/local/bin/terraform
 COPY --from=aws-cli /usr/local/bin/aws* /usr/local/bin/
-COPY --from=aws-cli /usr/local/lib/python3/dist-packages /usr/local/lib/python3/dist-packages
+COPY --from=aws-cli /usr/local/lib/python3.7/dist-packages /usr/local/lib/python3.7/dist-packages
 COPY --from=aws-cli /usr/lib/python3/dist-packages /usr/lib/python3/dist-packages
 
 WORKDIR /workspace
