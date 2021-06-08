@@ -11,6 +11,7 @@ RUN apt-get install --no-install-recommends -y curl
 RUN apt-get install --no-install-recommends -y ca-certificates
 RUN apt-get install --no-install-recommends -y unzip
 RUN apt-get install --no-install-recommends -y gnupg
+RUN apt-get install --no-install-recommends -y gettext-base
 RUN curl -Os https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_SHA256SUMS
 RUN curl -Os https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 RUN curl -Os https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_SHA256SUMS.sig
