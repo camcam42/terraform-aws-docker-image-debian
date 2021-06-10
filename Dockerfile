@@ -21,15 +21,14 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN grep terraform_${TERRAFORM_VERSION}_linux_amd64.zip terraform_${TERRAFORM_VERSION}_SHA256SUMS | sha256sum -c -
 RUN unzip -j terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 
-# Install AWS CLI using PIP
+# Install AWS CLI
 FROM debian:${DEBIAN_VERSION} as aws-cli
 ARG AWS_CLI_VERSION
-ARG PYTHON_MAJOR_VERSION
 RUN apt-get update
-RUN apt-get install -y --no-install-recommends python3
-RUN apt-get install -y --no-install-recommends python3-pip
-RUN pip3 install setuptools
-RUN pip3 install awscli==${AWS_CLI_VERSION}
+RUN apt-get install -y --no-install-recommends unzip
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION}.zip" -o "awscliv2.zip"
+RUN unzip awscliv2.zip
+RUN ./aws/install
 
 # Build final image
 FROM debian:${DEBIAN_VERSION}
@@ -39,15 +38,12 @@ RUN apt-get update \
     ca-certificates \
     git \
     jq \
-    python3 \
     gettext-base \
+    unzip \
   && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* \
-  && update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+  && rm -rf /var/lib/apt/lists/*
 COPY --from=terraform /terraform /usr/local/bin/terraform
 COPY --from=aws-cli /usr/local/bin/aws* /usr/local/bin/
-COPY --from=aws-cli /usr/local/lib/python3.7/dist-packages /usr/local/lib/python3.7/dist-packages
-COPY --from=aws-cli /usr/lib/python3/dist-packages /usr/lib/python3/dist-packages
 
 WORKDIR /workspace
 RUN groupadd --gid 1001 nonroot \
