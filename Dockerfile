@@ -1,6 +1,6 @@
 # Setup build arguments with default versions
-ARG AWS_CLI_VERSION=1.19.84
-ARG TERRAFORM_VERSION=0.15.4
+ARG AWS_CLI_VERSION=2.2.10
+ARG TERRAFORM_VERSION=1.0.0
 ARG DEBIAN_VERSION=stable-20210511-slim
 
 # Download Terraform binary
